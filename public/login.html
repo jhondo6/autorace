@@ -1,0 +1,173 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AutoRace | Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron', sans-serif;
+}
+
+body{
+min-height:100vh;
+background:linear-gradient(135deg,#0a0a0a,#1c1c1c);
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+color:white;
+}
+
+.box{
+
+width:100%;
+max-width:380px;
+
+background:#141414;
+padding:35px 30px;
+
+border-radius:12px;
+border:1px solid #333;
+
+box-shadow:0 0 25px rgba(255,0,0,0.2);
+
+}
+
+h1{
+text-align:center;
+color:#ff2a2a;
+margin-bottom:25px;
+font-size:24px;
+}
+
+input{
+
+width:100%;
+padding:14px;
+
+margin-bottom:14px;
+
+background:#0f0f0f;
+
+border:1px solid #333;
+
+border-radius:6px;
+
+color:white;
+
+font-size:16px;
+
+}
+
+input:focus{
+border-color:#ff2a2a;
+outline:none;
+}
+
+button{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:6px;
+
+background:#ff2a2a;
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+button:hover{
+background:#ff0000;
+}
+
+.link{
+
+margin-top:15px;
+
+text-align:center;
+
+font-size:14px;
+
+}
+
+.link a{
+
+color:#aaa;
+
+text-decoration:none;
+
+}
+
+.link a:hover{
+color:#ff2a2a;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>AUTORACE</h1>
+
+<input placeholder="Usuário" id="user">
+
+<input type="password" placeholder="Senha" id="pass">
+
+<button onclick="login()">Entrar</button>
+
+<div class="link">
+<a href="register.html">Criar conta</a>
+</div>
+
+</div>
+
+<script>
+
+function login(){
+
+let user=document.getElementById("user").value
+let pass=document.getElementById("pass").value
+
+let savedUser=localStorage.getItem("autorace_user")
+let savedPass=localStorage.getItem("autorace_pass")
+
+if(user===savedUser && pass===savedPass){
+
+window.location="dashboard.html"
+
+}else{
+
+alert("Login incorreto")
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

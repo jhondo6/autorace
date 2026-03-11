@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fila da Corrida</title>
+
+<style>
+
+body{
+background:#111;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:20px;
+}
+
+h1{
+margin-bottom:10px;
+}
+
+#status{
+margin-bottom:15px;
+}
+
+.progress{
+width:300px;
+height:14px;
+background:#222;
+border-radius:20px;
+margin:10px auto 20px auto;
+overflow:hidden;
+}
+
+.bar{
+height:100%;
+background:#00ff9d;
+width:0%;
+transition:0.3s;
+}
+
+.player{
+background:#1a1a1a;
+padding:12px;
+margin:6px auto;
+border-radius:8px;
+max-width:320px;
+font-size:16px;
+}
+
+.me{
+background:#ff2b2b;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🏁 Fila da Corrida</h1>
+
+<h3 id="status"></h3>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div id="players"></div>
+
+<script>
+
+const username = localStorage.getItem("autorace_user")
+
+function getCarEmoji(carId){
+
+const emojis={
+1:"🛴",
+2:"🚗",
+3:"🚙",
+4:"🏎",
+5:"🏎",
+6:"🏎"
+}
+
+return emojis[carId] || "🏎"
+
+}
+
+function getCarName(carId){
+
+const cars={
+1:"Kart",
+2:"Fiat Uno",
+3:"Civic",
+4:"Nissan GTR",
+5:"Porsche",
+6:"Ferrari"
+}
+
+return cars[carId] || "Carro"
+
+}
+
+async function loadRace(){
+
+try{
+
+const res=await fetch("http://localhost:3000/api/race")
+const race=await res.json()
+
+// se corrida iniciou
+if(race.status==="live"){
+window.location.href="corrida.html"
+return
+}
+
+const container=document.getElementById("players")
+container.innerHTML=""
+
+race.players.forEach(player=>{
+
+const isMe = player.username === username
+
+container.innerHTML+=`
+<div class="player ${isMe ? "me" : ""}">
+${getCarEmoji(player.carId)} ${player.username} - ${getCarName(player.carId)}
+</div>
+`
+
+})
+
+// progresso
+const percent = (race.players.length / race.maxPlayers) * 100
+document.getElementById("bar").style.width = percent + "%"
+
+const faltam=race.maxPlayers-race.players.length
+
+document.getElementById("status").innerText=
+"Jogadores: "+race.players.length+" / "+race.maxPlayers+" | faltam "+faltam
+
+}catch(e){}
+
+}
+
+// atualizar a cada 2s (menos carga)
+setInterval(loadRace,2000)
+
+loadRace()
+
+</script>
+
+</body>
+</html>

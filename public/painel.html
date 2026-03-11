@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin</title>
+
+<style>
+
+body{
+background:#111;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:20px;
+}
+
+.player{
+background:#1a1a1a;
+margin:5px;
+padding:10px;
+border-radius:6px;
+}
+
+button{
+margin-top:20px;
+padding:12px 20px;
+background:red;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Painel Admin</h1>
+
+<p id="status">Carregando...</p>
+
+<div id="players"></div>
+
+<button onclick="startRace()">INICIAR CORRIDA</button>
+
+<script>
+
+async function loadRace(){
+
+const res = await fetch("http://localhost:3000/api/race")
+
+const race = await res.json()
+
+document.getElementById("status").innerText =
+"Jogadores: "+race.players.length+" / "+race.maxPlayers
+
+const container = document.getElementById("players")
+
+container.innerHTML = ""
+
+race.players.forEach(player=>{
+
+container.innerHTML += `
+<div class="player">
+${player.username}
+</div>
+`
+
+})
+
+}
+
+function startRace(){
+
+fetch("http://localhost:3000/api/start-race",{
+method:"POST"
+})
+.then(res=>res.json())
+.then(data=>{
+alert(data.message)
+})
+
+}
+
+setInterval(loadRace,2000)
+
+loadRace()
+
+</script>
+
+</body>
+</html>
