@@ -1,18 +1,13 @@
 {
-  "name": "corrida-saas",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "mercadopago": "^2.12.0"
-  }
+"name":"autorace",
+"version":"1.0.0",
+"main":"server.js",
+"scripts":{
+"start":"node server.js"
+},
+"dependencies":{
+"cors":"^2.8.5",
+"express":"^4.18.2",
+"mercadopago":"^2.0.0"
+}
 }
