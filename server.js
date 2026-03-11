@@ -8,9 +8,11 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+app.use(express.static("public"))
+
 // CONFIGURAR MERCADO PAGO
 const client = new MercadoPagoConfig({
-accessToken: "SEU_ACCESS_TOKEN_AQUI"
+accessToken: "APP_USR-7815000747948134-031114-1d0958189d97142a9fe23f65ae5f3277-1294281583"
 })
 
 const payment = new Payment(client)
