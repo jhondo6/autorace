@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoRace Live</title>
+
+<style>
+
+body{
+background:#050505;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:20px;
+}
+
+h1{
+margin-bottom:10px;
+}
+
+.track{
+max-width:800px;
+margin:auto;
+}
+
+.lane{
+background:#1a1a1a;
+height:60px;
+margin:15px 0;
+border-radius:8px;
+position:relative;
+}
+
+.finish{
+position:absolute;
+right:20px;
+top:0;
+bottom:0;
+width:5px;
+background:white;
+}
+
+.car{
+position:absolute;
+left:0;
+top:15px;
+font-size:30px;
+transition:left 0.1s linear;
+}
+
+.name{
+position:absolute;
+left:5px;
+top:-18px;
+font-size:14px;
+color:#aaa;
+}
+
+.leader{
+margin-top:20px;
+font-size:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🏁 CORRIDA AO VIVO</h1>
+
+<div class="leader" id="leader">Aguardando corrida...</div>
+
+<div class="track" id="track"></div>
+
+<script>
+
+let cars=[]
+
+function getCarEmoji(carId){
+
+const emojis={
+1:"🛴",
+2:"🚗",
+3:"🚙",
+4:"🏎",
+5:"🏎",
+6:"🏎"
+}
+
+return emojis[carId] || "🏎"
+
+}
+
+function getCarWeight(carId){
+
+const weights={
+1:1,
+2:2,
+3:3,
+4:4,
+5:5,
+6:6
+}
+
+return weights[carId] || 1
+
+}
+
+async function loadRace(){
+
+const res=await fetch("http://localhost:3000/api/race")
+const race=await res.json()
+
+if(race.status!=="live"){
+setTimeout(loadRace,2000)
+return
+}
+
+const track=document.getElementById("track")
+track.innerHTML=""
+
+cars=[]
+
+race.players.forEach((player,i)=>{
+
+track.innerHTML+=`
+<div class="lane">
+<div class="finish"></div>
+<div class="name">${player.username}</div>
+<div class="car" id="car${i}">
+${getCarEmoji(player.carId)}
+</div>
+</div>
+`
+
+cars.push({
+id:"car"+i,
+username:player.username,
+distance:0,
+speed:getCarWeight(player.carId)
+})
+
+})
+
+startRace()
+
+}
+
+function startRace(){
+
+const interval=setInterval(()=>{
+
+let leader=cars[0]
+
+cars.forEach(car=>{
+
+let speed=(Math.random()*2)*car.speed
+
+if(car.distance>350){
+speed*=0.6
+}
+
+car.distance+=speed
+
+document.getElementById(car.id).style.left=
+car.distance+"px"
+
+if(car.distance>leader.distance){
+leader=car
+}
+
+})
+
+document.getElementById("leader").innerText=
+"Líder: "+leader.username
+
+const winner=cars.find(c=>c.distance>700)
+
+if(winner){
+
+clearInterval(interval)
+
+document.getElementById("leader").innerText=
+"🏆 VENCEDOR: "+winner.username
+
+finishRace()
+
+}
+
+},100)
+
+}
+
+async function finishRace(){
+
+cars.sort((a,b)=>b.distance-a.distance)
+
+const ranking=cars.map(c=>c.username)
+
+await fetch("http://localhost:3000/api/finish-race",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({ranking})
+})
+
+setTimeout(()=>{
+window.location.reload()
+},4000)
+
+}
+
+loadRace()
+
+</script>
+
+</body>
+</html>

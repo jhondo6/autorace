@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AutoRace | Criar Conta</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+
+min-height:100vh;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+padding:20px;
+
+background:
+radial-gradient(circle at center, rgba(255,0,0,0.2), transparent 60%),
+linear-gradient(135deg,#050505,#111);
+
+color:white;
+
+}
+
+.container{
+
+width:100%;
+max-width:360px;
+
+background:#111;
+
+padding:30px;
+
+border-radius:12px;
+
+border:1px solid #333;
+
+}
+
+h1{
+
+text-align:center;
+
+margin-bottom:25px;
+
+font-size:22px;
+
+color:#ff2a2a;
+
+}
+
+input{
+
+width:100%;
+
+padding:14px;
+
+margin-bottom:15px;
+
+border-radius:8px;
+
+border:1px solid #333;
+
+background:#0a0a0a;
+
+color:white;
+
+font-size:15px;
+
+}
+
+input:focus{
+
+outline:none;
+
+border-color:#ff2a2a;
+
+}
+
+button{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:10px;
+
+background:#ff2a2a;
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+button:hover{
+
+box-shadow:0 0 15px red;
+
+}
+
+.link{
+
+margin-top:15px;
+
+text-align:center;
+
+font-size:14px;
+
+}
+
+.link a{
+
+color:#aaa;
+
+text-decoration:none;
+
+}
+
+.link a:hover{
+
+color:#ff2a2a;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Criar Conta</h1>
+
+<input id="user" placeholder="Usuário">
+
+<input id="pass" type="password" placeholder="Senha">
+
+<button onclick="register()">Criar Conta</button>
+
+<div class="link">
+<a href="login.html">Já tenho conta</a>
+</div>
+
+</div>
+
+<script>
+
+function register(){
+
+let user=document.getElementById("user").value
+let pass=document.getElementById("pass").value
+
+if(user==="" || pass===""){
+alert("Preencha todos os campos")
+return
+}
+
+localStorage.setItem("autorace_user",user)
+localStorage.setItem("autorace_pass",pass)
+
+alert("Conta criada!")
+
+window.location.href="login.html"
+
+}
+
+</script>
+
+</body>
+</html>1
